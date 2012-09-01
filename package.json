@@ -1,0 +1,14 @@
+{
+  "name": "multiplayer_node",
+  "subdomain": "levhita.multiplayer_node",
+  "scripts": {
+    "start": "main.js"
+  },
+  "version": "0.0.0-1",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {
+    "express": ">= 2.3.x"
+  }
+}
