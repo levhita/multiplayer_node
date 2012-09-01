@@ -29,3 +29,5 @@ var Player = function(config){
 	
 	return self;
 };
+
+module.exports = Player;

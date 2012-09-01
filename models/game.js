@@ -1,8 +1,8 @@
-var World = function(config){
+var Game = function(config){
 	config = config || {};
 	var self = {};
 	
-	self.players  = config.players || [];
+	self.players      = config.players || [];
 	self.map	= config.map || [
 	        	                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 	        	                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -21,15 +21,5 @@ var World = function(config){
 	
 	self.world = [];
 	
-	/**
-	 * Returns the full state of the world
-	 * @todo return full world, not just the map
-	 */
-	self.getWorld = function (){
-		return self.map;
-	};
-	
 	return self;
 };
-
-module.exports = World;

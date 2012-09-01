@@ -3,13 +3,26 @@ var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 
+var world_module = require('./models/world.js');
+var player_module = require('./models/player.js');
+
+
 var messages = [],
 	ress     = [];
+	WorldInstance = new world_module();
+	Players = [];
 	
-
+/** Redirects to Game Page **/	
 app.get('/', function(req, res){
-  	res.send('Hello world');
+	res.redirect('index.html');
 });
+/** returns current map **/
+
+app.get('/world/get', function(req, res){
+	res.send(WorldInstance.getWorld());
+});
+
+
 
 app.get('/mensaje/new/:mensaje', function(req, res){
 	messages.push(req.params.mensaje);
