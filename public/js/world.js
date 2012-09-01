@@ -18,19 +18,21 @@ var World = function(config){
 	
 	/** renders the map **/
 	self.render = function() {
-		self.ctx.drawImage(self.tiles[0], 20, 20);
-		self.ctx.drawImage(self.tiles[1], 40, 40);
-		self.ctx.drawImage(self.tiles[2], 20, 20);
+		for(var i = 0; i < self.map.length; i++) {
+			for(var j = 0; j < self.map[i].length; j++){ 
+			    self.ctx.drawImage(self.tiles[self.map[i][j]], i*20, j*20);
+			}
+		}
 	};
 	
-	self.getMap(){
+	self.getWorld = function(){
 		$.ajax({
 			url: 'world/get',
 			success: function(data) {
-				alert(data);
+				self.map = data;
 			}
 		});
-	}
+	};
 	
 	return self;
 };
