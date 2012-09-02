@@ -2,8 +2,8 @@ var Player = function(config){
 	config = config || {};
 	var self = {};
 	
-	self.x		= config.x || 0;
-	self.y		= config.y || 0;
+	self.x		= config.x || -1;
+	self.y		= config.y || -1;
 	self.name	= config.name || 'unnamed';
 	
 	self.teleport = function(x,y) {
@@ -23,7 +23,11 @@ var Player = function(config){
 		} 
 	};
 	
-	self.getPosition   = function() {
+	self.setName = function(name) {
+		self.name=name;
+	};
+	
+	self.getPosition = function() {
 		return {x:self.x, y:self.y};
 	};
 	
