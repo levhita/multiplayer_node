@@ -2,7 +2,7 @@
   "name": "multiplayer_node",
   "subdomain": "levhita.multiplayer_node",
   "scripts": {
-    "start": "main.js"
+    "start": "app.js"
   },
   "version": "0.0.0-1",
   "engines": {

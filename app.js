@@ -3,18 +3,23 @@ var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 
-var player_module = require('./models/player.js');
-var world_module = require('./models/world.js');
+var faye   = require('faye');
+var server = new faye.NodeAdapter({mount: '/faye'});
+
+var Player = require('./public/js/player').Player;
+var World  = require('./public/js/world').World;
+var Game   = require('./models/game').Game;
 
 var messages = [],
 	ress     = [],
 
-WorldInstance = new world_module();
-WorldInstance.addPlayer(new player_module());
-WorldInstance.addPlayer(new player_module());
-WorldInstance.addPlayer(new player_module());
-WorldInstance.addPlayer(new player_module());
-WorldInstance.generateMap();
+world = new World();
+world.generateMap();
+world.addPlayer(new Player());
+world.addPlayer(new Player());
+world.addPlayer(new Player());
+world.addPlayer(new Player());
+world.locatePlayers();
 	
 /** Redirects to Game Page **/	
 app.get('/', function(req, res){
@@ -23,22 +28,22 @@ app.get('/', function(req, res){
 
 /** returns current world **/
 app.get('/world/get', function(req, res){
-	res.send(WorldInstance.getWorld());
+	res.send(world.getWorld());
 });
 
 /** returns current player positions **/
 app.get('/players/get', function(req, res){
-	res.send(WorldInstance.getPlayers());
+	res.send(world.getPlayers());
 });
 
 /** returns current map **/
 app.get('/map/get', function(req, res){
-	res.send(WorldInstance.getMap());
+	res.send(world.getMap());
 });
 
 app.get('/player/new/:name/:x/:y', function(req, res){
-	var Player = new player_module({name:req.params.name, x:req.params.x, y:req.params.y});
-	WorldInstance.addPlayer(Player);
+	var Player = new Player({name:req.params.name, x:req.params.x, y:req.params.y});
+	world.addPlayer(Player);
 	res.send({code:200})
 });
 

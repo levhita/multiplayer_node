@@ -1,3 +1,4 @@
+(function (global){
 var Player = function(config){
 	config = config || {};
 	var self = {};
@@ -6,9 +7,22 @@ var Player = function(config){
 	self.y		= config.y || -1;
 	self.name	= config.name || 'unnamed';
 	
-	self.teleport = function(x,y) {
+	self.locate = function(x,y) {
+		console.log(x,y);
 		self.x = x;
 		self.y = y;
+	};
+	
+	self.teleport = function(world){
+		do{
+			do {
+				do {
+					random_x = Math.floor(Math.random()*41);
+					random_y = Math.floor(Math.random()*31);
+				} while(world.isOccupied(random_x,random_y));
+			} while(!world.isWalkable(random_x,random_y));
+		} while(world.isTarget(random_x,random_y));
+		self.locate(random_x, random_y);
 	};
 	
 	self.move = function(direction) {
@@ -34,4 +48,5 @@ var Player = function(config){
 	return self;
 };
 
-module.exports = Player;
+global.Player = Player;
+}(typeof window  === 'undefined' ? exports : window));

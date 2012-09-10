@@ -1,7 +1,5 @@
 $(document).ready(function(){
-	WorldInstance = World({
-		
-	});
-	WorldInstance.getWorld();
-	WorldInstance.render();
- });
+	world = new World();
+    world.setupCanvas();
+    world.updateWorldData(true);
+});
