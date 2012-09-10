@@ -41,6 +41,16 @@ var World = function(config){
 		}
 	};
 	
+	self.movePlayer(clientId, direction) {
+		for(var i=0; i<self.players.length; i++) {
+			if (self.players[i].clientId==clientId){
+				self.players[i].move(direction);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	self.isWalkable = function(x,y) {
 		return (self.map[x][y] != 1);
 	};

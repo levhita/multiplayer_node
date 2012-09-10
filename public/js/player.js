@@ -3,9 +3,10 @@ var Player = function(config){
 	config = config || {};
 	var self = {};
 	
-	self.x		= config.x || -1;
-	self.y		= config.y || -1;
-	self.name	= config.name || 'unnamed';
+	self.x			= config.x || -1;
+	self.y			= config.y || -1;
+	self.name		= config.name || 'unnamed';
+	self.clientId	= config.clientId || 0;
 	
 	self.locate = function(x,y) {
 		console.log(x,y);

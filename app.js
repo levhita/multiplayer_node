@@ -15,10 +15,6 @@ var messages = [],
 
 world = new World();
 world.generateMap();
-world.addPlayer(new Player());
-world.addPlayer(new Player());
-world.addPlayer(new Player());
-world.addPlayer(new Player());
 world.locatePlayers();
 	
 /** Redirects to Game Page **/	
@@ -26,9 +22,9 @@ app.get('/', function(req, res){
 	res.redirect('index.html');
 });
 
-/** returns current world **/
-app.get('/world/get', function(req, res){
-	res.send(world.getWorld());
+/** Redirects to Game Page **/	
+app.get('/', function(req, res){
+	res.redirect('index.html');
 });
 
 /** returns current player positions **/
@@ -61,6 +57,20 @@ app.get('/mensaje/new/:mensaje', function(req, res){
 app.get('/mensaje/list', function(req, res){
 	ress.push(res);
 });
+
+
+
+var extension = {
+	incoming : function(message, callback) {
+		if(message.channel === '/join') {
+			console.log(message);
+			var player = new Player({clientId:message.clientId});
+			world.addPlayer(player);
+		}
+		callback(message);
+	}
+};
+server.addExtension(extension);
 
 app.listen(3000);
 console.log("Express server running at\n  => http://localhost:3000/\nCTRL + C to shutdown");
