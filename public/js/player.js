@@ -1,4 +1,12 @@
 (function (global){
+
+/*
+Good idea but i'm passing the world where i need it.
+
+if ( typeof window  === 'undefined' ) {
+	var World  = require('./public/js/world').World;
+}*/
+
 var Player = function(config){
 	config = config || {};
 	var self = {};
@@ -8,6 +16,11 @@ var Player = function(config){
 	self.name		= config.name || 'unnamed';
 	self.clientId	= config.clientId || 0;
 	
+
+	/*self.toJSON = function () {
+		return {self.x, self.y, self.name, self.clientId};
+	}*/
+
 	self.locate = function(x,y) {
 		console.log(x,y);
 		self.x = x;
@@ -15,6 +28,7 @@ var Player = function(config){
 	};
 	
 	self.teleport = function(world){
+
 		do{
 			do {
 				do {

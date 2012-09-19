@@ -5,11 +5,14 @@
     <script type="text/javascript" src="/js/player.js"></script>
     <script type="text/javascript" src="/js/world.js"></script>
     <script type="text/javascript" src="/js/game.js"></script>
+    <script type="text/javascript" src="/js/faye-browser-min.js"></script>
     <link   rel="stylesheet" type="text/css" href="css/basic.css" />
   </head>
   
   <body>
     <h1>Multiplayer Node</h1>
+    <input type="button" onclick="joinGame()" value="join"/>
+    
     <h2 id="playername">unnamed</h2>
     <canvas id="world" width="800" height="600">
       <h1>You browser is old and you should feel bad</h1>

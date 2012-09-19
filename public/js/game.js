@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	world = new World();
     world.setupCanvas();
-    world.updateWorldData(true);
+    world.updateWorldData();
     
 	window.client = new Faye.Client('http://localhost:3000/faye');
 	
@@ -11,9 +11,15 @@ $(document).ready(function(){
 	    world.render();
 	});
 	
-	client.subscribe('/moves', function(message) {
+	client.subscribe('/new/player', function(message) {
 		console.log(message);
-	    world.movePlayer(message.clientID, message.data.direction);
+		world.updateWorldData();
 	    world.render();
 	});
 });
+
+function joinGame() {
+  window.client.publish('/join', {
+  	name: 'levhita'
+  });
+}

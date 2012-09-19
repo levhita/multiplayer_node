@@ -41,7 +41,7 @@ var World = function(config){
 		}
 	};
 	
-	self.movePlayer(clientId, direction) {
+	self.movePlayer = function (clientId, direction) {
 		for(var i=0; i<self.players.length; i++) {
 			if (self.players[i].clientId==clientId){
 				self.players[i].move(direction);
@@ -59,7 +59,7 @@ var World = function(config){
 		return (self.map[x][y] == 2);
 	};
 	
-	self.isOccupied = function(x,y){
+	self.isOccupied = function(x,y) {
 		for(var i=0; i<self.players.lenght; i++) {
 			if (self.players[i].x==x && self.players[i].y==y) {
 				return true;

@@ -2,13 +2,13 @@
   "name": "multiplayer_node",
   "subdomain": "levhita.multiplayer_node",
   "scripts": {
-    "start": "app.js"
+	"start": "app.js"
   },
   "version": "0.0.0-1",
   "engines": {
-    "node": "0.8.x"
+	"node": "0.8.x"
   },
   "dependencies": {
-    "express": ">= 2.3.x"
+	"express": ">= 2.3.x"
   }
 }
