@@ -14,7 +14,7 @@ var Player = function(config){
 	self.x			= config.x || -1;
 	self.y			= config.y || -1;
 	self.name		= config.name || 'unnamed';
-	self.clientId	= config.clientId || 0;
+	self.token		= config.token || '';
 	
 
 	/*self.toJSON = function () {
@@ -41,13 +41,14 @@ var Player = function(config){
 	};
 	
 	self.move = function(direction) {
+		console.log(direction);
 		if(direction=='left') {
 			self.x = self.x-1;
 		} else if(direction=='right') {
 			self.x = self.x+1;
-		} else if(direction='up') {
+		} else if(direction=='up') {
 			self.y = self.y-1;
-		} else if(direction='down') {
+		} else if(direction=='down') {
 			self.y = self.y+1;
 		} 
 	};

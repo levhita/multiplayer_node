@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Multiplayer Node</title>
+    <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="/js/player.js"></script>
+    <script type="text/javascript" src="/js/world.js"></script>
+    <script type="text/javascript" src="/js/game.js"></script>
+    <script type="text/javascript" src="/js/faye-browser-min.js"></script>
+    <script type="text/javascript" src="/js/keymaster.min.js"></script>
+    <link   rel="stylesheet" type="text/css" href="/css/basic.css" />
+        
+    <script type="text/javascript">
+      var view_config = {
+        logged_in:<%=logged_in%>,
+        name:'<%=name%>',
+        token:'<%=token%>'
+      };
+    </script>
+  </head>
+  
+  <body>
+    <h1>Multiplayer Node</h1>
+    
+    <% if(logged_in) { %>
+      <div id="player_info">
+        <h2><%=name%></h2>
+      </div>
+    <% } else { %>
+      <div id="player_loggin">
+        <label for="name_input">Name:</a>
+        <input type="text" id="name_input" value=""/>
+        <input type="hidden" id="token" value="<%=token%>"/>
+        <input type="button" onclick="joinGame()" value="join"/>
+      </div>
+    <%} %>
+    
+    <canvas id="world" width="800" height="600">
+      <h1>You browser is old and you should feel bad</h1>
+      <img src="/images/old_browsers.jpg" alt="You browser is old and you should feel bad" />
+    </canvas>
+  </body>
+
+</html>

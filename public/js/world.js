@@ -41,10 +41,13 @@ var World = function(config){
 		}
 	};
 	
-	self.movePlayer = function (clientId, direction) {
+	self.movePlayer = function (name, direction, token) {
 		for(var i=0; i<self.players.length; i++) {
-			if (self.players[i].clientId==clientId){
-				self.players[i].move(direction);
+			if (self.players[i].name==name){
+				if(token === undefined || token === self.players[i].token) {
+					console.log(self.players[i]);
+					self.players[i].move(direction);
+				}
 				return true;
 			}
 		}
@@ -111,10 +114,13 @@ var World = function(config){
 	/** Gets full world data **/
 	self.updateWorldData = function(){
 		$.ajax({
-			url: 'world/get',
+			url: '/world/get',
 			success: function(data) {
 				self.map = data.map;
-				self.players = data.players;
+				self.players = [];
+				data.players.forEach(function(player){
+					self.players.push(new Player(player));
+				});
 			}
 		});
 	};
@@ -122,7 +128,7 @@ var World = function(config){
 	/** Gets only the map **/
 	self.updateMapData = function(){
 		$.ajax({
-			url: 'map/get',
+			url: '/map/get',
 			success: function(data) {
 				self.map = data;
 			}
@@ -132,9 +138,12 @@ var World = function(config){
 	/** Gets players positions **/
 	self.updatePlayersData = function(){
 		$.ajax({
-			url: 'players/get',
+			url: '/players/get',
 			success: function(data) {
-				self.players = data;
+				self.players = [];
+				data.each(function(player){
+					self.players.push(new Player(player));
+				});
 			}
 		});
 	};
