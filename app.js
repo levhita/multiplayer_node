@@ -43,14 +43,12 @@ app.get('/', function(req, res){
 app.post('/join', function(req, res){
     var player = {},
         name = '';
-    console.log(req.body.token, req.session.token);
     if(req.session.name === undefined &&  req.body.token === req.session.token ) {
-        console.log("Logging in: " + req.body.name);
         name = req.session.name = req.body.name;
         player = new Player({name: req.body.name, token: req.body.token});
         player.teleport(world);
         world.addPlayer(player);
-        faye_server.getClient().publish('/new/player', {name: name});
+        faye_server.getClient().publish('/update_players', world.getPlayers());
     }
     res.send({status: 'success'});
 });
@@ -84,7 +82,7 @@ var extension = {
 
         if(message.channel === '/move') {
             world.movePlayer(message.data.name, message.data.direction, message.data.token);
-            faye_server.getClient().publish('/moves', {name:message.data.name, direction:message.data.direction});
+            //faye_server.getClient().publish('/moves', {name:message.data.name, direction:message.data.direction});
         }
 
         callback(message);
@@ -93,5 +91,15 @@ var extension = {
 faye_server.addExtension(extension);
 server.listen(3000);
 faye_server.attach(server);
+
+setTimeout(function(){
+    life_cycle = setInterval( function() {
+        if(world.changed) {
+            faye_server.getClient().publish('/update_players', world.getPlayers());
+            world.changed = false;
+        }
+    }, 50);    
+}, 100);
+
 
 console.log("Express server running at\n  => http://localhost:3000/\nCTRL + C to shutdown");

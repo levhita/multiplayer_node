@@ -22,7 +22,6 @@ var Player = function(config){
 	}*/
 
 	self.locate = function(x,y) {
-		console.log(x,y);
 		self.x = x;
 		self.y = y;
 	};
@@ -40,17 +39,29 @@ var Player = function(config){
 		self.locate(random_x, random_y);
 	};
 	
-	self.move = function(direction) {
-		console.log(direction);
+	self.move = function(direction, world) {
+		var x = self.x,
+			y = self.y;
+		
 		if(direction=='left') {
-			self.x = self.x-1;
+			x = self.x-1;
 		} else if(direction=='right') {
-			self.x = self.x+1;
+			x = self.x+1;
 		} else if(direction=='up') {
-			self.y = self.y-1;
+			y = self.y-1;
 		} else if(direction=='down') {
-			self.y = self.y+1;
+			y = self.y+1;
 		} 
+		/*if(world.isTarget(target.x, target.y)) {
+			// win condition; return;
+		}*/
+		if (world.isWalkable(x, y) && !world.isOccupied(x, y) ) {
+			console.log(x,y);
+			self.x = x;
+			self.y = y;
+			return true;
+		}
+		return false;
 	};
 	
 	self.setName = function(name) {

@@ -5,6 +5,7 @@ var World = function(config){
 	
 	self.players  = config.players || [];
 	self.map = config.map || [];
+	self.changed = false;
 	
 	self.getWorld = function () {
 		return {map: self.map, players:self.players};
@@ -23,12 +24,13 @@ var World = function(config){
 	};
 	
 	self.generateMap = function(){
+		var x, y;
 		/** Random map probably oriented wrong...**/
-		for(var i=0; i<40; i++) {
+		for(var x=0; x<40; x++) {
 			self.map.push([]);
-			for(var j = 0; j<30; j++){ 
+			for(var y = 0; y<30; y++){ 
 				block = (Math.floor(Math.random()*10)<8)?0:1;
-				self.map[i].push(block); 
+				self.map[x].push(block); 
 			}
 		}
 		/** Randomly Put the objective **/ 
@@ -45,8 +47,11 @@ var World = function(config){
 		for(var i=0; i<self.players.length; i++) {
 			if (self.players[i].name==name){
 				if(token === undefined || token === self.players[i].token) {
-					console.log(self.players[i]);
-					self.players[i].move(direction);
+					if(self.players[i].move(direction, self)){
+						self.changed = true;
+						return true;
+					}
+					return false;
 				}
 				return true;
 			}
@@ -55,6 +60,12 @@ var World = function(config){
 	}
 	
 	self.isWalkable = function(x,y) {
+		if(x<0 || x>=40){
+			return false;
+		}
+		if(y<0 || y>=30){
+			return false;
+		}
 		return (self.map[x][y] != 1);
 	};
 	
@@ -63,14 +74,14 @@ var World = function(config){
 	};
 	
 	self.isOccupied = function(x,y) {
-		for(var i=0; i<self.players.lenght; i++) {
+		for(var i=0; i<self.players.length; i++) {
 			if (self.players[i].x==x && self.players[i].y==y) {
 				return true;
 			}
 		} 
 		return false;
 	};
-	
+
 	/** Functions for the browser **/
 	self.setupCanvas = function() {
 		/** Preload Images **/
@@ -105,7 +116,6 @@ var World = function(config){
 		
 		/** Render players **/
 		for(var i=0; i<self.players.length; i++) {
-			console.log(self.players[i]);
 			self.ctx.drawImage(self.tiles[3], self.players[i].x*20, self.players[i].y*20);
 		}
 	};
@@ -136,15 +146,10 @@ var World = function(config){
 	};
 	
 	/** Gets players positions **/
-	self.updatePlayersData = function(){
-		$.ajax({
-			url: '/players/get',
-			success: function(data) {
-				self.players = [];
-				data.each(function(player){
-					self.players.push(new Player(player));
-				});
-			}
+	self.updatePlayersData = function(players){
+		self.players = [];
+		players.forEach(function(player){
+			self.players.push(new Player(player));
 		});
 	};
 	
