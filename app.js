@@ -16,13 +16,6 @@ app.configure(function() {
     app.use(express.bodyParser());
 });
 
-var messages = [],
-    ress     = [],
-
-world = new World();
-world.generateMap();
-world.locatePlayers();
-
 /** Redirects to Game Page **/  
 app.get('/', function(req, res){
     var data = {}
@@ -42,7 +35,7 @@ app.get('/', function(req, res){
 
 app.post('/join', function(req, res){
     var player = {},
-        name = '';
+    name = '';
     if(req.session.name === undefined &&  req.body.token === req.session.token ) {
         name = req.session.name = req.body.name;
         player = new Player({name: req.body.name, token: req.body.token});
@@ -92,14 +85,10 @@ faye_server.addExtension(extension);
 server.listen(3000);
 faye_server.attach(server);
 
-setTimeout(function(){
-    life_cycle = setInterval( function() {
-        if(world.changed) {
-            faye_server.getClient().publish('/update_players', world.getPlayers());
-            world.changed = false;
-        }
-    }, 50);    
-}, 100);
+process.faye_server = faye_server;
 
+world = new World();
+world.init();
+world.lifeCycle();
 
 console.log("Express server running at\n  => http://localhost:3000/\nCTRL + C to shutdown");

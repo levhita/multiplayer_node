@@ -11,8 +11,16 @@ $(document).ready(function(){
 	});*/
 
 	client.subscribe('/update_players', function(players) {
-		console.log('updated');
 		world.updatePlayersData(players);
+		world.render();
+	});
+
+	client.subscribe('/winner', function(data) {
+		console.log('Winner: ' + data.name);
+	});
+
+    client.subscribe('/restart', function() {
+		world.updateWorldData();
 		world.render();
 	});
 	

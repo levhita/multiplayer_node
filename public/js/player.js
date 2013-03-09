@@ -52,11 +52,12 @@ var Player = function(config){
 		} else if(direction=='down') {
 			y = self.y+1;
 		} 
-		/*if(world.isTarget(target.x, target.y)) {
-			// win condition; return;
-		}*/
+		if(world.isTarget(x, y)) {
+		    process.faye_server.getClient().publish('/winner', {name: self.name});
+			world.restart();
+			return true;
+		}
 		if (world.isWalkable(x, y) && !world.isOccupied(x, y) ) {
-			console.log(x,y);
 			self.x = x;
 			self.y = y;
 			return true;

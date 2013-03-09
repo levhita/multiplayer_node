@@ -10,6 +10,17 @@ var World = function(config){
 	self.getWorld = function () {
 		return {map: self.map, players:self.players};
 	};
+
+	self.lifeCycle = function(faye_server) {
+		setTimeout(function(){
+		    self.life_cycle = setInterval( function() {
+		        if(world.changed) {
+		            process.faye_server.getClient().publish('/update_players', world.getPlayers());
+		            world.changed = false;
+		        }
+		    }, 50);    
+		}, 100);
+	}
 	
 	self.getMap = function () {
 		return self.map;
@@ -23,8 +34,23 @@ var World = function(config){
 		self.players.push(player);
 	};
 	
+	self.restart = function(){
+		clearInterval(self.life_cycle);
+		self.init();
+		self.lifeCycle();
+		process.faye_server.getClient().publish('/restart',{});
+	}
+
+	self.init = function(){
+		self.generateMap();
+		self.locatePlayers();
+	}
+	
 	self.generateMap = function(){
 		var x, y;
+
+		self.map = [];
+
 		/** Random map probably oriented wrong...**/
 		for(var x=0; x<40; x++) {
 			self.map.push([]);
