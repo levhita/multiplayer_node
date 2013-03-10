@@ -21,9 +21,9 @@ app.get('/', function(req, res){
     var data = {}
     if(req.session.name === undefined) {
         data.logged_in = false;
-        req.session.token = data.token = Utils.makeId(7);
+        req.session.token = Utils.makeId(7);
         data.token = req.session.token;
-        data.name = 'unnamed';
+        data.name = Utils.makeId(7);
     } else {
         data.logged_in = true;
         data.token = req.session.token;

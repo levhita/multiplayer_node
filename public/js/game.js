@@ -3,20 +3,22 @@ $(document).ready(function(){
 	world.setupCanvas();
 	world.updateWorldData();
 
-	window.client = new Faye.Client('http://localhost:3000/faye');
+	//window.client = new Faye.Client('http://black_bitches.jit.su/faye');
+	//window.client = new Faye.Client('http://localhost:3000/faye');
 	
-	/*client.subscribe('/moves', function(message) {
-		world.movePlayer(message.name, message.direction);
-		world.render();
-	});*/
-
+	window.client = new Faye.Client('http://192.168.1.106:3000/faye');
+	
 	client.subscribe('/update_players', function(players) {
 		world.updatePlayersData(players);
 		world.render();
 	});
 
 	client.subscribe('/winner', function(data) {
-		console.log('Winner: ' + data.name);
+		if (data.name == view_config.name) {
+			world.loss();
+		} else {
+			world.win();
+		}
 	});
 
     client.subscribe('/restart', function() {

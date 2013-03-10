@@ -15,6 +15,8 @@ var Player = function(config){
 	self.y			= config.y || -1;
 	self.name		= config.name || 'unnamed';
 	self.token		= config.token || '';
+	self.direction  = config.direction || 'down';
+	self.status 	= config.status || 'walk';
 	
 
 	/*self.toJSON = function () {
@@ -27,12 +29,11 @@ var Player = function(config){
 	};
 	
 	self.teleport = function(world){
-
 		do{
 			do {
 				do {
-					random_x = Math.floor(Math.random()*41);
-					random_y = Math.floor(Math.random()*31);
+					random_x = Math.floor(Math.random()* world.width);
+					random_y = Math.floor(Math.random()* world.height);
 				} while(world.isOccupied(random_x,random_y));
 			} while(!world.isWalkable(random_x,random_y));
 		} while(world.isTarget(random_x,random_y));
@@ -42,6 +43,8 @@ var Player = function(config){
 	self.move = function(direction, world) {
 		var x = self.x,
 			y = self.y;
+		
+		self.direction = direction;
 		
 		if(direction=='left') {
 			x = self.x-1;
@@ -62,7 +65,7 @@ var Player = function(config){
 			self.y = y;
 			return true;
 		}
-		return false;
+		return true;
 	};
 	
 	self.setName = function(name) {
